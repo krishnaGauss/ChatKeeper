@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+      --primary: #10a37f;
+      --primary-hover: #0d8a69;
+      --primary-light: rgba(16, 163, 127, 0.1);
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --success-border: #6ee7b7;
+      --error-bg: #fef2f2;
+      --error-border: #fca5a5;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 420px;
+      min-height: 500px;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+      color: white;
+      padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><circle cx="20" cy="10" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="15" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="60" cy="5" r="1" fill="rgba(255,255,255,0.06)"/></svg>');
+      pointer-events: none;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .header-subtitle {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .main-content {
+      padding: 24px;
+      background: var(--bg-primary);
+    }
+
+    .save-section {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .save-section:hover {
+      box-shadow: var(--shadow);
+    }
+
+    .current-page {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--primary);
+      word-break: break-all;
+    }
+
+    .save-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    input[type="text"]::placeholder {
+      color: var(--text-muted);
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+      color: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--primary-hover) 0%, #047857 100%);
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      background: var(--text-muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 2px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .btn-icon {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+      color: white;
+      padding: 8px 12px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, var(--danger-hover) 0%, #b91c1c 100%);
+      transform: translateY(-1px);
+    }
+
+    .conversations-section {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-header {
+      padding: 16px 20px;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .conversation-count {
+      background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .conversation-list {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .conversation-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .conversation-list::-webkit-scrollbar-track {
+      background: var(--bg-tertiary);
+    }
+
+    .conversation-list::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+      border-radius: 3px;
+    }
+
+    .conversation-list::-webkit-scrollbar-thumb:hover {
+      background: var(--text-secondary);
+    }
+
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-light);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .conversation-item:last-child {
+      border-bottom: none;
+    }
+
+    .conversation-item:hover {
+      background: var(--bg-secondary);
+      transform: translateX(4px);
+    }
+
+    .conversation-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 0;
+      background: var(--primary);
+      border-radius: 0 2px 2px 0;
+      transition: height 0.2s ease;
+    }
+
+    .conversation-item:hover::before {
+      height: 60%;
+    }
+
+    .conversation-info {
+      flex: 1;
+      min-width: 0;
+      margin-left: 8px;
+    }
+
+    .conversation-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s ease;
+    }
+
+    .conversation-name:hover {
+      color: var(--primary);
+    }
+
+    .conversation-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .conversation-date {
+      background: var(--bg-tertiary);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .conversation-url {
+      word-break: break-all;
+      opacity: 0.8;
+    }
+
+    .conversation-actions {
+      display: flex;
+      gap: 6px;
+      margin-left: 12px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .conversation-item:hover .conversation-actions {
+      opacity: 1;
+    }
+
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .empty-description {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .status-message {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      text-align: center;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .status-success {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .status-error {
+      background: var(--error-bg);
+      color: var(--danger);
+      border: 1px solid var(--error-border);
+    }
+
+    .not-chatgpt {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      border: 2px dashed var(--border);
+      margin: 24px;
+    }
+
+    .not-chatgpt-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="header-icon">💬</div>
+      <div>
+        <h1>ChatKeeper</h1>
+        <div class="header-subtitle">Save & organize your conversations</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notChatGPT" class="not-chatgpt" style="display: none;">
+    <div class="not-chatgpt-icon">🚫</div>
+    <div class="empty-title">ChatGPT page required</div>
+    <div class="empty-description">
+      Navigate to <strong>chat.openai.com</strong> or <strong>chatgpt.com</strong><br>
+      to start saving your conversations
+    </div>
+  </div>
+
+  <div id="mainContent" class="main-content">
+    <div class="save-section">
+      <div id="currentPage" class="current-page"></div>
+      <div id="statusMessage"></div>
+      
+      <div class="save-form">
+        <div class="input-wrapper">
+          <input type="text" id="conversationName" placeholder="Give this conversation a memorable name..." maxlength="100">
+        </div>
+        <div class="input-group">
+          <button id="saveBtn" class="btn btn-primary">
+            <span>💾</span>
+            <span>Save Current</span>
+          </button>
+          <button id="refreshBtn" class="btn btn-secondary btn-icon" title="Refresh">🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="conversations-section">
+      <div class="section-header">
+        <span>Saved Conversations</span>
+        <span id="conversationCount" class="conversation-count">0</span>
+      </div>
+      <div id="conversationList" class="conversation-list">
+        <div class="empty-state">
+          <div class="empty-icon">📚</div>
+          <div class="empty-title">No conversations saved yet</div>
+          <div class="empty-description">
+            Save your first ChatGPT conversation to get started!<br>
+            Perfect for keeping track of useful discussions.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
